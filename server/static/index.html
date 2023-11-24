@@ -14,16 +14,20 @@
         <header>
             
         </header>
-        <main class="width:100%">
+        <main>
             <h1>-- --- .-. ... . -- .</h1>
-            <flex class="f-switch">
-                <flex class="f-col">
-                    <figure></figure>
-                </flex>
-                <flex class="f-col">
-                    <figure></figure>
-                </flex>
-            </flex>
+            <figure>
+                <h2>Ticket Number Test</h2>
+                <p id="ticket-no" class="">A1B2-C3D4</p>
+                <button class="big"
+                    hx-get="/ticket"
+                    hx-trigger="click"
+                    hx-target="#ticket-no"
+                    hx-swap="innerHTML">
+                    Get Ticket No.
+                </button>
+            </figure>
+            <figure></figure>
         </main>
         <footer>
             Ryan Shaw-Harrison, 2023
