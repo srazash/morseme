@@ -14,7 +14,7 @@ func main() {
 	e.Static("/", "static")
 
 	e.GET("/ticket", func(c echo.Context) error {
-		markup := fmt.Sprintf("<p id=\"ticket-no\" class=\"\">%s</p>", ticket.GenerateTicketNo())
+		markup := fmt.Sprintf("<pre id=\"ticket-no\" class=\"big\">%s</pre>", ticket.GenerateTicketNo())
 		return c.HTML(http.StatusOK, markup)
 	})
 

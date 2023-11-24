@@ -18,12 +18,15 @@
             <h1>-- --- .-. ... . -- .</h1>
             <figure>
                 <h2>Ticket Number Test</h2>
-                <p id="ticket-no" class="">????-????</p>
+                <pre id="ticket-no" class="big">????-????</pre>
                 <button class="big"
                     hx-get="/ticket"
                     hx-trigger="click"
                     hx-target="#ticket-no"
-                    hx-swap="innerHTML">
+                    hx-swap="outerHTML"
+                    _="on click
+                        toggle @disabled
+                        until htmx:afterOnLoad">
                     Get Ticket No.
                 </button>
             </figure>
