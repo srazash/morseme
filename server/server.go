@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"morseme/server/ticket"
+	"bytes"
+	"context"
+	"morseme/server/templates"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -14,8 +15,9 @@ func main() {
 	e.Static("/", "static")
 
 	e.GET("/ticket", func(c echo.Context) error {
-		markup := fmt.Sprintf("<pre id=\"ticket-no\" class=\"big\">%s</pre>", ticket.GenerateTicketNo())
-		return c.HTML(http.StatusOK, markup)
+		m := new(bytes.Buffer)
+		templates.TicketNo().Render(context.Background(), m)
+		return c.HTML(http.StatusOK, m.String())
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))

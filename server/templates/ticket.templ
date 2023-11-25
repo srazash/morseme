@@ -1,0 +1,11 @@
+package templates
+
+import (
+    "strings"
+    
+    "server/ticket"
+)
+
+templ TicketNo() {
+	<pre id="ticket-no" class="big">{ strings.ToUpper(ticket.GenerateTicketNo()) }</pre>
+}

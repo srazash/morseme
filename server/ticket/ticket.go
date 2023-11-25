@@ -19,5 +19,5 @@ func GenerateTicketNo() string {
 		}
 	}
 
-	return strings.ToUpper(ticket.String())
+	return ticket.String()
 }
