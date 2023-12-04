@@ -37,7 +37,13 @@ func Encode(input string) string {
 	output := ""
 
 	for i, r := range lowerInput {
-		output += runeToMorseStr[r]
+		switch r {
+		case ' ':
+			continue
+		default:
+			output += runeToMorseStr[r]
+		}
+
 		if i < len(input)-1 {
 			output += " "
 		}
