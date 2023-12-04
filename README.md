@@ -2,7 +2,7 @@
 
 Hey, welcome to the dumbest project in existence! This is a study project I have come up with which will involve the following languages, tools and technologies:
 
-- Go
+- Go (w/ Templ + Echo)
 - HTMX
 - Hyperscript
 - SQLite
