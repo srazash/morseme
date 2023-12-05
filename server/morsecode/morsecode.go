@@ -1,8 +1,14 @@
 package morsecode
 
-import "strings"
+import (
+	"errors"
+	"regexp"
+	"strings"
+)
 
-func Encode(input string) string {
+func Encode(input string) (string, error) {
+
+	re := regexp.MustCompile(`^[a-zA-Z\s]*$`)
 
 	runeToMorseStr := map[rune]string{
 		'a': ".-",
@@ -33,6 +39,10 @@ func Encode(input string) string {
 		'z': "--..",
 	}
 
+	if !re.MatchString(input) {
+		return "", errors.New("input contains invalid characters")
+	}
+
 	lowerInput := strings.ToLower(input)
 	output := ""
 
@@ -49,5 +59,5 @@ func Encode(input string) string {
 		}
 	}
 
-	return output
+	return output, nil
 }
