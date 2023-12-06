@@ -15,7 +15,7 @@
             
         </header>
         <main>
-            <h1>MorseMe</h1>
+            <h1 id="h1-title" hx-get="/title-morse" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">MorseMe</h1>
             <figure>
                 <h2>Ticket Number Test</h2>
                 <pre id="ticket-no" class="big">????-????</pre>
@@ -35,7 +35,7 @@
                 <form class="box rows">
                         <label for="text-input">
                             Input:
-                            <input id="text-input" name="text-input" type="text" size="40" spellcheck="true" required />
+                            <input id="text-input" name="text-input" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
                         </label>
                     <input class="big" type="submit" />
                 </form>

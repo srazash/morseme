@@ -20,5 +20,13 @@ func main() {
 		return c.HTML(http.StatusOK, m.String())
 	})
 
+	e.GET("/title-morse", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, `<h1 id="h1-title" hx-get="/title-text" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">-- --- .-. ... . -- .</h1>`)
+	})
+
+	e.GET("/title-text", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, `<h1 id="h1-title" hx-get="/title-morse" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">MorseMe</h1>`)
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }
