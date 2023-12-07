@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
+	"morseme/server/morsecode"
 	"morseme/server/templates"
 	"net/http"
 
@@ -29,7 +31,14 @@ func main() {
 	})
 
 	e.POST("/encode-to-morse", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, `<pre id="encode-output" class="big">Submitted!</pre>`)
+		m := ""
+		enc, err := morsecode.Encode("TEST")
+		if err != nil {
+			m = `<pre id="encode-output" class="big">Please only use letters and spaces!</pre>`
+		} else {
+			m = fmt.Sprintf(`<pre id="encode-output" class="big">%s</pre>`, enc)
+		}
+		return c.HTML(http.StatusOK, m)
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
