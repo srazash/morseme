@@ -33,9 +33,8 @@
             <figure>
                 <h2>Text to Morse Test</h2>
                 <form id="encode-form" class="box rows"
-                    hx-post="/encode-to-morse"
                     hx-target="#encode-output"
-                    hx-trigger="submit">
+                    hx-post="/encode-to-morse">
                         <label for="text-input">
                             Input:
                             <input id="text-input" name="text-input" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />

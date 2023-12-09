@@ -32,7 +32,7 @@ func main() {
 
 	e.POST("/encode-to-morse", func(c echo.Context) error {
 		m := ""
-		enc, err := morsecode.Encode("TEST")
+		enc, err := morsecode.Encode(c.FormValue("text-input"))
 		if err != nil {
 			m = `<pre id="encode-output" class="big">Please only use letters and spaces!</pre>`
 		} else {
