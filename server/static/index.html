@@ -30,10 +30,11 @@
                     Get Ticket No.
                 </button>
             </figure>
-            <figure>
+            <figure id="encode-figure">
                 <h2>Text to Morse Test</h2>
                 <form id="encode-form" class="box rows"
-                    hx-target="#encode-output"
+                    hx-target="#encode-figure"
+                    hx-swap="outerHTML"
                     hx-post="/encode-to-morse">
                         <label for="text-input">
                             Input:
