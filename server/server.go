@@ -44,9 +44,9 @@ func main() {
 		pre := ""
 		enc, err := morsecode.Encode(c.FormValue("text-input"))
 		if err != nil {
-			pre = `<pre id="encode-output" class="big">Please only use letters and spaces!</pre>`
+			pre = `<pre id="encode-output">Please only use letters and spaces!</pre>`
 		} else {
-			pre = fmt.Sprintf(`<pre id="encode-output" class="big">%s</pre>`, enc)
+			pre = fmt.Sprintf(`<pre id="encode-output">%s</pre>`, enc)
 		}
 
 		m := fmt.Sprintf(`<figure id="encode-figure">
@@ -59,7 +59,7 @@ func main() {
 					Input:
 					<input id="text-input" name="text-input" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
 				</label>
-			<input class="big" type="submit" value="Encode!" />
+				<input type="submit" value="Encode!" />
 		</form>
 		%s
 	</figure>`, pre)
