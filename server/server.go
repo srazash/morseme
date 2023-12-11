@@ -25,7 +25,9 @@ func main() {
 
 	e.GET("/footer", func(c echo.Context) error {
 		return c.HTML(http.StatusOK, fmt.Sprintf(`<footer
-		hx-get="/footer">
+		hx-get="/footer"
+		hx-trigger="revealed"
+		hx-swap="outerHTML">
 		%s %d
 		</footer>`, "Ryan Shaw-Harrison,", time.Now().Year()))
 	})
