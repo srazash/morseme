@@ -46,8 +46,10 @@
             </figure>
             <figure></figure>
         </main>
-        <footer>
-            Ryan Shaw-Harrison, 2023
+        <footer
+            hx-get="/footer"
+            hx-trigger="load"
+            hx-swap="outerHTML">
         </footer>
     </body>
 </html>

@@ -7,6 +7,7 @@ import (
 	"morseme/server/morsecode"
 	"morseme/server/templates"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -20,6 +21,13 @@ func main() {
 		m := new(bytes.Buffer)
 		templates.TicketNo().Render(context.Background(), m)
 		return c.HTML(http.StatusOK, m.String())
+	})
+
+	e.GET("/footer", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, fmt.Sprintf(`<footer
+		hx-get="/footer">
+		%s %d
+		</footer>`, "Ryan Shaw-Harrison,", time.Now().Year()))
 	})
 
 	e.GET("/title-morse", func(c echo.Context) error {
