@@ -12,10 +12,22 @@
 
     <body>
         <header>
-            <a href="https://morseme.ryankun.moe">morseme.ryankun.moe</a>
+            <flex class="f-switch">
+                <flex class="f-col justify-content:center align-items:start">
+                    <h1 id="h1-title"
+                        hx-get="/title-morse"
+                        hx-trigger="click"
+                        hx-target="#h1-title"
+                        hx-swap="outerHTML">
+                        MorseMe
+                    </h1>
+                </flex>
+                <flex class="f-col justify-content:center align-items:end">
+                    <a href="https://morseme.ryankun.moe">morseme.ryankun.moe</a>
+                </flex>
+            </flex>
         </header>
         <main>
-            <h1 id="h1-title" hx-get="/title-morse" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">MorseMe</h1>
             <figure>
                 <h2>Ticket Number Test</h2>
                 <pre id="ticket-no" class="big">????-????</pre>
