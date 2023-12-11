@@ -29,7 +29,7 @@ func main() {
 		hx-trigger="revealed"
 		hx-swap="outerHTML">
 		%s %d
-		</footer>`, "Ryan Shaw-Harrison,", time.Now().Year()))
+		</footer>`, "MorseMe,", time.Now().Year()))
 	})
 
 	e.GET("/title-morse", func(c echo.Context) error {
