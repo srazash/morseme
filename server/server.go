@@ -24,45 +24,52 @@ func main() {
 	})
 
 	e.GET("/footer", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, fmt.Sprintf(`<footer
-		hx-get="/footer"
-		hx-trigger="revealed"
-		hx-swap="outerHTML">
-		%s %d
-		</footer>`, "MorseMe,", time.Now().Year()))
+		return c.HTML(http.StatusOK, fmt.Sprintf(`%s %d`, "MorseMe,", time.Now().Year()))
 	})
 
 	e.GET("/title-morse", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, `<h1 id="h1-title" hx-get="/title-text" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">-- --- .-. ... . -- .</h1>`)
+		return c.HTML(http.StatusOK, `<div id="h1-title" class="logo terminal-prompt"
+		hx-get="/title-text" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">
+		-- --- .-. ... . -- .
+		</div>`)
 	})
 
 	e.GET("/title-text", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, `<h1 id="h1-title" hx-get="/title-morse" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">MorseMe</h1>`)
+		return c.HTML(http.StatusOK, `<div id="h1-title" class="logo terminal-prompt"
+		hx-get="/title-morse" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">
+		MorseMe
+		</div>`)
 	})
 
 	e.POST("/encode-to-morse", func(c echo.Context) error {
-		pre := ""
+		d := ""
 		enc, err := morsecode.Encode(c.FormValue("text-input"))
 		if err != nil {
-			pre = `<pre id="encode-output">Please only use letters and spaces!</pre>`
+			d = `<div id="encode-output" class="terminal-alert terminal-alert-error">invalid input: letters and spaces only!</div>`
 		} else {
-			pre = fmt.Sprintf(`<pre id="encode-output">%s</pre>`, enc)
+			d = fmt.Sprintf(`<div id="encode-output" class="terminal-alert terminal-alert-primary">%s</div>`, enc)
 		}
 
-		m := fmt.Sprintf(`<figure id="encode-figure">
-		<h2>Text to Morse Test</h2>
-		<form id="encode-form" class="box rows"
-			hx-target="#encode-figure"
-			hx-swap="outerHTML"
-			hx-post="/encode-to-morse">
-				<label for="text-input">
-					Input:
-					<input id="text-input" name="text-input" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
-				</label>
-				<input type="submit" value="Encode!" />
-		</form>
+		m := fmt.Sprintf(`<form id="encode-form"
+		hx-target="#encode-form"
+		hx-swap="outerHTML"
+		hx-post="/encode-to-morse">
+		<fieldset>
+			<legend>Text to convert</legend>
+			<div>
+			<label for="text-input">
+				Input:
+				<input id="text-input" name="text-input" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
+			</label>
+			</div>
+			<br>
+			<div>
+				<input id="submit-btn" class="btn btn-default" type="submit" value="Encode!" />
+			</div>
+		</fieldset>
+		<br>
 		%s
-	</figure>`, pre)
+		</form>`, d)
 
 		return c.HTML(http.StatusOK, m)
 	})

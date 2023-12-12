@@ -7,5 +7,5 @@ import (
 )
 
 templ TicketNo() {
-	<pre id="ticket-no" class="big">{ strings.ToUpper(ticket.GenerateTicketNo()) }</pre>
+    <div id="ticket-no" class="terminal-alert terminal-alert-primary">{ strings.ToUpper(ticket.GenerateTicketNo()) }</div>
 }
