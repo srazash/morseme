@@ -24,7 +24,7 @@ func main() {
 	})
 
 	e.GET("/footer", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, fmt.Sprintf(`%s %d`, "MorseMe,", time.Now().Year()))
+		return c.HTML(http.StatusOK, fmt.Sprintf(`%s %d`, "MorseMe: send me a message in morse code, created by RSH ©", time.Now().Year()))
 	})
 
 	e.GET("/title-morse", func(c echo.Context) error {
@@ -64,7 +64,7 @@ func main() {
 			</div>
 			<br>
 			<div>
-				<input id="submit-btn" class="btn btn-default" type="submit" value="Encode!" />
+				<input id="submit-btn" class="btn btn-default" type="submit" value="Convert" />
 			</div>
 		</fieldset>
 		<br>
