@@ -28,17 +28,15 @@ func main() {
 	})
 
 	e.GET("/title-morse", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, `<div id="h1-title" class="logo terminal-prompt"
-		hx-get="/title-text" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">
-		-- --- .-. ... . -- .
-		</div>`)
+		m := new(bytes.Buffer)
+		templates.TitleMorse().Render(context.Background(), m)
+		return c.HTML(http.StatusOK, m.String())
 	})
 
 	e.GET("/title-text", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, `<div id="h1-title" class="logo terminal-prompt"
-		hx-get="/title-morse" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">
-		MorseMe
-		</div>`)
+		m := new(bytes.Buffer)
+		templates.TitleText().Render(context.Background(), m)
+		return c.HTML(http.StatusOK, m.String())
 	})
 
 	e.POST("/encode-to-morse", func(c echo.Context) error {

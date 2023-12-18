@@ -1,9 +1,13 @@
 package templates
 
 templ TitleMorse() {
-	<h1 hx-get="/title-text" hx-target=this hx-trigger="click[ctrlKey]">-- --- .-. ... . -- .</h1>
+	<div id="h1-title" class="logo terminal-prompt" hx-get="/title-text" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">
+		-- --- .-. ... . -- .
+	</div>
 }
 
 templ TitleText() {
-	<h1 hx-get="/title-morse" hx-target=this hx-trigger="click[ctrlKey]">MorseMe</h1>
+	<div id="h1-title" class="logo terminal-prompt" hx-get="/title-morse" hx-trigger="click" hx-target="#h1-title" hx-swap="outerHTML">
+		MorseMe
+	</div>
 }
