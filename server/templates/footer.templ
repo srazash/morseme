@@ -1,0 +1,10 @@
+package templates
+
+import (
+    "fmt"
+    "time"
+)
+
+templ Footer() {
+    { fmt.Sprintf("MorseMe: send me a message in morse code, created by RSH © %d", time.Now().Year()) }
+}
