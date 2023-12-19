@@ -1,0 +1,25 @@
+package templates
+
+templ Encode(input string, err error) {
+    <form id="encode-form" hx-target="#encode-form" hx-swap="outerHTML" hx-post="/encode-to-morse">
+		<fieldset>
+			<legend>Text to convert</legend>
+			<div>
+			<label for="text-input">
+				Input:
+				<input id="text-input" name="text-input" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
+			</label>
+			</div>
+			<br />
+			<div>
+				<input id="submit-btn" class="btn btn-default" type="submit" value="Convert" />
+			</div>
+		</fieldset>
+		<br />
+		if err != nil {
+            <div id="encode-output" class="terminal-alert terminal-alert-error">invalid input: letters and spaces only!</div>
+        } else {
+            <div id="encode-output" class="terminal-alert terminal-alert-primary">{ input }</div>
+        }
+	</form>
+}
