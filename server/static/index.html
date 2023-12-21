@@ -65,6 +65,19 @@
 
             <hr>
 
+            <h2>Send a message</h2>
+            <form>
+                <fieldset>
+                    <legend>Message to send</legend>
+                    <label for="message-body">
+                        Input:
+                        <input id="message-body" name="message-body" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
+                    </label>
+                </fieldset>
+            </form>
+
+            <hr>
+
             <footer>
                 <div hx-get="/footer" hx-trigger="revealed" hx-swap="innerHTML"></div>
             </footer>
