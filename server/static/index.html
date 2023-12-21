@@ -19,6 +19,7 @@
                 </header>
                 <nav class="terminal-menu">
                     <ul>
+                        <li><a href="#" _="on click toggle @hidden on #testing-div">toggle testing options</a></li>
                         <li><a href="https://morseme.ryankun.moe">morseme.ryankun.moe</a></li>
                     </ul>
                 </nav>
@@ -26,45 +27,46 @@
         </div>
 
         <div class="container">
-            <h2>Ticket Number Test</h2>
-            <div id="ticket-no" class="terminal-alert">????-????</div>
-            <button class="btn btn-primary"
-                hx-get="/ticket"
-                hx-trigger="click"
-                hx-target="#ticket-no"
-                hx-swap="outerHTML"
-                _="on click
-                    toggle @disabled
-                    until htmx:afterOnLoad">
-                Get Ticket #
-            </button>
+            <div id="testing-div" hidden="true">
+                <h2>Ticket Number Test</h2>
+                <div id="ticket-no" class="terminal-alert">????-????</div>
+                <button class="btn btn-primary"
+                    hx-get="/ticket"
+                    hx-trigger="click"
+                    hx-target="#ticket-no"
+                    hx-swap="outerHTML"
+                    _="on click
+                        toggle @disabled
+                        until htmx:afterOnLoad">
+                    Get Ticket #
+                </button>
 
-            <hr>
+                <hr>
 
-            <h2>Text to Morse Test</h2>
-            <form id="encode-form"
-                hx-target="#encode-form"
-                hx-swap="outerHTML"
-                hx-post="/encode-to-morse">
-                <fieldset>
-                    <legend>Text to convert</legend>
-                    <div>
-                    <label for="text-input">
-                        Input:
-                        <input id="text-input" name="text-input" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
-                    </label>
-                    </div>
+                <h2>Text to Morse Test</h2>
+                <form id="encode-form"
+                    hx-target="#encode-form"
+                    hx-swap="outerHTML"
+                    hx-post="/encode-to-morse">
+                    <fieldset>
+                        <legend>Text to convert</legend>
+                        <div>
+                        <label for="text-input">
+                            Input:
+                            <input id="text-input" name="text-input" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
+                        </label>
+                        </div>
+                        <br>
+                        <div>
+                            <input id="submit-btn" class="btn btn-default" type="submit" value="Convert" />
+                        </div>
+                    </fieldset>
                     <br>
-                    <div>
-                        <input id="submit-btn" class="btn btn-default" type="submit" value="Convert" />
-                    </div>
-                </fieldset>
-                <br>
-                <div id="encode-output" class="terminal-alert">...</div>
-            </form>
+                    <div id="encode-output" class="terminal-alert">...</div>
+                </form>
 
-            <hr>
-
+                <hr>
+            </div>
             <h2>Send a message</h2>
             <form>
                 <fieldset>
@@ -111,7 +113,7 @@
             <hr>
 
             <footer>
-                <div hx-get="/footer" hx-trigger="revealed" hx-swap="innerHTML"></div>
+                <div hx-get="/footer" hx-trigger="load" hx-swap="innerHTML"></div>
             </footer>
         </div>
     </body>
