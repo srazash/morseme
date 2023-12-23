@@ -50,5 +50,13 @@ func main() {
 		return c.HTML(http.StatusOK, m.String())
 	})
 
+	e.POST("/message", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, "")
+	})
+
+	e.POST("/check", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, "")
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }
