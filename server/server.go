@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"morseme/server/message"
 	"morseme/server/morsecode"
 	"morseme/server/templates"
 	"net/http"
@@ -51,7 +52,8 @@ func main() {
 	})
 
 	e.POST("/message", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, "")
+		m := message.MessageHandler(c.FormValue("message-body"), c.FormValue("message-sender"))
+		return c.HTML(http.StatusOK, m)
 	})
 
 	e.POST("/check", func(c echo.Context) error {

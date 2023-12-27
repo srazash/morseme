@@ -68,7 +68,10 @@
                 <hr>
             </div>
             <h2>Send a message</h2>
-            <form>
+            <form id="message-form"
+            hx-target="#message-form"
+            hx-swap="innerHTML"
+            hx-post="/message">
                 <fieldset>
                     <legend>Message to send</legend>
                     <div>
