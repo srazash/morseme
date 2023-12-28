@@ -1,5 +1,7 @@
 package ims
 
+import "fmt"
+
 type Message struct {
 	MessageText   string
 	MessageSender string
@@ -19,4 +21,8 @@ func CheckIMS(t string) Message {
 		}
 	}
 	return Message{"", "", ""}
+}
+
+func StringifyMessage(m Message) string {
+	return fmt.Sprintf("Message: %s, from: %s (%s)", m.MessageText, m.MessageSender, m.MessageTicket)
 }

@@ -97,7 +97,10 @@
             <hr>
 
             <h2>Check a message</h2>
-            <form>
+            <form id="check-form"
+            hx-target="#check-form"
+            hx-swap="innerHTML"
+            hx-post="/check">
                 <fieldset>
                     <legend>Message to check</legend>
                     <div>
