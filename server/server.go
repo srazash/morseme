@@ -58,8 +58,7 @@ func main() {
 	})
 
 	e.POST("/check", func(c echo.Context) error {
-		msg := ims.CheckIMS(c.FormValue("ticket-number"))
-		m := ims.StringifyMessage(msg)
+		m := ims.StringifyMessage(ims.CheckIMS(c.FormValue("ticket-number")))
 		return c.HTML(http.StatusOK, m)
 	})
 

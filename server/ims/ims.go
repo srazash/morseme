@@ -1,6 +1,10 @@
 package ims
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/labstack/gommon/log"
+)
 
 type Message struct {
 	MessageText   string
@@ -17,10 +21,11 @@ func AddToIMS(m Message) {
 func CheckIMS(t string) Message {
 	for _, m := range MessageStore {
 		if m.MessageTicket == t {
+			log.Infof("message found matching %s, returning message to caller", m.MessageTicket)
 			return m
 		}
 	}
-	return Message{"", "", ""}
+	return Message{"no message found", "", ""}
 }
 
 func StringifyMessage(m Message) string {
