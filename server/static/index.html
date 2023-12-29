@@ -79,6 +79,29 @@
 
             <hr>
 
+            <h2>Message statistics</h2>
+            <div id="message-stats">
+                <table>
+                    <caption>Message stats:</caption>
+                    <thead>
+                        <tr>
+                            <th>Total</th>
+                            <th>Undelivered</th>
+                            <th>Delivered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr>
+
             <footer>
                 <div hx-get="/footer" hx-trigger="load" hx-swap="innerHTML"></div>
             </footer>
