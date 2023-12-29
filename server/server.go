@@ -52,6 +52,12 @@ func main() {
 		return c.HTML(http.StatusOK, m.String())
 	})
 
+	e.GET("/new-message", func(c echo.Context) error {
+		m := new(bytes.Buffer)
+		templates.Message().Render(context.Background(), m)
+		return c.HTML(http.StatusOK, m.String())
+	})
+
 	e.POST("/message", func(c echo.Context) error {
 		m := message.MessageHandler(c.FormValue("message-body"), c.FormValue("message-sender"))
 		return c.HTML(http.StatusOK, m)

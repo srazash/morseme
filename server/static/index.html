@@ -68,31 +68,8 @@
                 <hr>
             </div>
             <h2>Send a message</h2>
-            <form id="message-form"
-            hx-target="#message-form"
-            hx-swap="innerHTML"
-            hx-post="/message">
-                <fieldset>
-                    <legend>Message to send</legend>
-                    <div>
-                        <label for="message-body">
-                            Message:
-                            <input id="message-body" name="message-body" type="text" size="40" spellcheck="true" placeholder="letters and spaces only" maxlength="100" required />
-                        </label>
-                    </div>
-                    <br>
-                    <div>
-                        <label for="message-sender">
-                            Sender:
-                            <input id="message-sender" name="message-sender" type="text" size="40" spellcheck="true" placeholder="your name (optional)" maxlength="100" />
-                        </label>
-                    </div>
-                    <br>
-                    <div>
-                        <input id="message-submit" class="btn btn-primary" type="submit" value="Send" />
-                    </div>
-                </fieldset>
-            </form>
+
+            <form id="message-form" hx-trigger="load" hx-target="#message-form" hx-swap="outerHTML" hx-get="/new-message"></form>
 
             <hr>
 
