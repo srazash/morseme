@@ -1,0 +1,19 @@
+package templates
+
+templ NewCheck() {
+    <form id="check-form" hx-target="#check-form" hx-swap="innerHTML" hx-post="/check">
+		<fieldset>
+			<legend>Message to check</legend>
+			<div>
+				<label for="ticket-number">
+					Ticket #:
+					<input id="ticket-number" name="ticket-number" type="text" size="40" spellcheck="true" placeholder="ABCD-1234" maxlength="100" required />
+				</label>
+			</div>
+			<br />
+			<div>
+				<input id="ticket-submit" class="btn btn-primary" type="submit" value="Check" />
+			</div>
+		</fieldset>
+	</form>
+}

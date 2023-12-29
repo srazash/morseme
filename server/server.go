@@ -54,7 +54,13 @@ func main() {
 
 	e.GET("/new-message", func(c echo.Context) error {
 		m := new(bytes.Buffer)
-		templates.Message().Render(context.Background(), m)
+		templates.NewMessage().Render(context.Background(), m)
+		return c.HTML(http.StatusOK, m.String())
+	})
+
+	e.GET("/new-check", func(c echo.Context) error {
+		m := new(bytes.Buffer)
+		templates.NewCheck().Render(context.Background(), m)
 		return c.HTML(http.StatusOK, m.String())
 	})
 
