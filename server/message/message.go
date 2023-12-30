@@ -52,19 +52,19 @@ func StringifyMessage(m Message) string {
 }
 
 func MessageStats() (int, int, int) {
-	t := 0
-	u := 0
-	d := 0
+	total := 0
+	undelivered := 0
+	delivered := 0
 
-	t = len(MessageStore)
+	total = len(MessageStore)
 
 	for _, v := range MessageStore {
 		if !v.Delivered {
-			u += 1
+			undelivered += 1
 		}
 	}
 
-	d = t - u
+	delivered = total - undelivered
 
-	return t, u, d
+	return total, undelivered, delivered
 }
