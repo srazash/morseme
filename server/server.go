@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"morseme/server/ims"
 	"morseme/server/message"
 	"morseme/server/morsecode"
 	"morseme/server/templates"
@@ -70,7 +69,7 @@ func main() {
 	})
 
 	e.POST("/check", func(c echo.Context) error {
-		m := ims.StringifyMessage(ims.CheckIMS(c.FormValue("ticket-number")))
+		m := message.StringifyMessage(message.CheckIMS(c.FormValue("ticket-number")))
 		return c.HTML(http.StatusOK, m)
 	})
 
