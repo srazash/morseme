@@ -73,5 +73,11 @@ func main() {
 		return c.HTML(http.StatusOK, m)
 	})
 
+	e.GET("/stats", func(c echo.Context) error {
+		m := new(bytes.Buffer)
+		templates.MessageStats(message.MessageStats()).Render(context.Background(), m)
+		return c.HTML(http.StatusOK, m.String())
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }

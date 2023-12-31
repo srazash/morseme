@@ -67,40 +67,19 @@
 
                 <hr>
             </div>
-            <h2>Send a message</h2>
 
+            <h2>Send a message</h2>
             <form id="message-form" hx-trigger="load" hx-target="#message-form" hx-swap="outerHTML" hx-get="/new-message"></form>
 
             <hr>
 
             <h2>Check a message</h2>
-
             <form id="check-form" hx-trigger="load" hx-target="#check-form" hx-swap="outerHTML" hx-get="/new-check"></form>
 
             <hr>
 
             <h2>Message statistics</h2>
-            <div id="message-stats">
-                <table>
-                    <caption>Message stats:</caption>
-                    <thead>
-                        <tr>
-                            <th>Total</th>
-                            <th>Undelivered</th>
-                            <th>Delivered</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>0</td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button class="btn">Refresh statistics</button>
-                (refreshes automatically every 60 seconds)
-            </div>
+            <div id="message-stats" id="check-form" hx-trigger="load" hx-target="#message-stats" hx-swap="outerHTML" hx-get="/stats"></div>
 
             <hr>
 

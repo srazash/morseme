@@ -1,0 +1,27 @@
+package templates
+
+import "fmt"
+
+templ MessageStats(total int, undelivered int, delivered int) {
+    <div id="message-stats" hx-trigger="every 60s" hx-target="#message-stats" hx-swap="outerHTML" hx-get="/stats">
+        <table>
+            <caption>Message stats:</caption>
+            <thead>
+                <tr>
+                    <th>Total</th>
+                    <th>Undelivered</th>
+                    <th>Delivered</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{ fmt.Sprintf("%d", total) }</td>
+                    <td>{ fmt.Sprintf("%d", undelivered) }</td>
+                    <td>{ fmt.Sprintf("%d", delivered) }</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn" hx-trigger="click" hx-target="#message-stats" hx-swap="outerHTML" hx-get="/stats">Refresh statistics</button>
+        (refreshes automatically every 60 seconds)
+    </div>
+}
