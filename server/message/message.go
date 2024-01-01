@@ -49,7 +49,7 @@ func CheckIMS(t string) Message {
 			return m
 		}
 	}
-	return Message{0, "no message found", "", "", time.Time{}, time.Time{}, false}
+	return Message{0, "no message found", "", t, time.Time{}, time.Time{}, false}
 }
 
 func StringifyMessage(m Message) string {

@@ -1,5 +1,8 @@
 package templates
 
+import "morseme/server/message"
+import "morseme/server/morsecode"
+
 templ NewCheck() {
     <form id="check-form" hx-target="#check-form" hx-swap="innerHTML" hx-post="/check">
 		<fieldset>
@@ -16,4 +19,30 @@ templ NewCheck() {
 			</div>
 		</fieldset>
 	</form>
+}
+
+templ GetCheck(m message.Message) {
+	<div id="check-form">
+		<fieldset>
+			<legend>Message check</legend>
+			if m.MessageId != 0 {
+				<div id="encode-output" class="terminal-alert terminal-alert-primary">
+					<div>Message for ticket # { m.MessageTicket }:</div>
+					<pre>{ m.MessageText } --> { morsecode.ErrorlessEncode(m.MessageText) }</pre>
+					if !m.DeliveredState {
+						<div>Your message has not been delievered!</div>
+						<div>Message sent: { m.Submitted.Format() }</div>
+					} else {
+						<div>Your message has been delievered!</div>
+						<div>Message sent: { m.Submitted.Format() }</div>
+						<div>Message delievered: { m.Submitted.Format() }</div>
+					}
+				</div>
+			} else {
+				<div id="encode-output" class="terminal-alert terminal-alert-error">No message found for ticket # { m.MessageTicket }. Please double check your ticket # and try again.</div>
+			}
+			<br />
+			<button hx-target="#check-form" hx-swap="innerHTML" hx-post="/check">Check another message</button>
+		</fieldset>
+	</div>
 }
