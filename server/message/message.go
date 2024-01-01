@@ -3,27 +3,32 @@ package message
 import (
 	"fmt"
 	"morseme/server/ticket"
+	"time"
 
 	"github.com/labstack/gommon/log"
 )
 
 type Message struct {
-	MessageId     int
-	MessageText   string
-	MessageSender string
-	MessageTicket string
-	Delivered     bool
+	MessageId      int
+	MessageText    string
+	MessageSender  string
+	MessageTicket  string
+	Submitted      time.Time
+	Delivered      time.Time
+	DeliveredState bool
 }
 
 var MessageStore = []Message{}
 
 func MessageHandler(m string, s string) string {
 	NewMessage := Message{
-		MessageId:     len(MessageStore) + 1,
-		MessageText:   m,
-		MessageSender: s,
-		MessageTicket: ticket.GenerateTicketNo(),
-		Delivered:     false,
+		MessageId:      len(MessageStore) + 1,
+		MessageText:    m,
+		MessageSender:  s,
+		MessageTicket:  ticket.GenerateTicketNo(),
+		Submitted:      time.Now(),
+		Delivered:      time.Time{},
+		DeliveredState: false,
 	}
 
 	MessageStore = append(MessageStore, NewMessage)
@@ -44,7 +49,7 @@ func CheckIMS(t string) Message {
 			return m
 		}
 	}
-	return Message{0, "no message found", "", "", false}
+	return Message{0, "no message found", "", "", time.Time{}, time.Time{}, false}
 }
 
 func StringifyMessage(m Message) string {
@@ -59,7 +64,7 @@ func MessageStats() (int, int, int) {
 	total = len(MessageStore)
 
 	for _, v := range MessageStore {
-		if !v.Delivered {
+		if !v.DeliveredState {
 			undelivered += 1
 		}
 	}
