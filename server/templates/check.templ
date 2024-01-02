@@ -5,13 +5,13 @@ import "morseme/server/morsecode"
 import "time"
 
 templ NewCheck() {
-    <form id="check-form" hx-target="#check-form" hx-swap="innerHTML" hx-post="/check">
+    <form id="check-form" hx-target="#check-form" hx-swap="innerHTML" hx-post="/check-message">
 		<fieldset>
 			<legend>Message to check</legend>
 			<div>
 				<label for="ticket-number">
 					Ticket #:
-					<input id="ticket-number" name="ticket-number" type="text" size="40" spellcheck="true" placeholder="ABCD-1234" maxlength="100" required />
+					<input id="ticket-number" name="ticket-number" type="text" size="40" placeholder="ABCD-1234" maxlength="100" required />
 				</label>
 			</div>
 			<br />
@@ -43,7 +43,7 @@ templ GetCheck(m message.Message) {
 				<div id="encode-output" class="terminal-alert terminal-alert-error">No message found for ticket # { m.MessageTicket }. Please double check your ticket # and try again.</div>
 			}
 			<br />
-			<button hx-target="#check-form" hx-swap="innerHTML" hx-post="/check">Check another message</button>
+			<button class="btn btn-primary" hx-target="#check-form" hx-swap="outerHTML" hx-get="/check">Check another message</button>
 		</fieldset>
 	</div>
 }

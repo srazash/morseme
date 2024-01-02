@@ -57,7 +57,7 @@ func main() {
 		return c.HTML(http.StatusOK, m.String())
 	})
 
-	e.GET("/new-check", func(c echo.Context) error {
+	e.GET("/check", func(c echo.Context) error {
 		m := new(bytes.Buffer)
 		templates.NewCheck().Render(context.Background(), m)
 		return c.HTML(http.StatusOK, m.String())
@@ -68,14 +68,15 @@ func main() {
 		return c.HTML(http.StatusOK, m)
 	})
 
-	e.POST("/check", func(c echo.Context) error {
-		m := message.StringifyMessage(message.CheckIMS(c.FormValue("ticket-number")))
-		return c.HTML(http.StatusOK, m)
-	})
-
 	e.GET("/stats", func(c echo.Context) error {
 		m := new(bytes.Buffer)
 		templates.MessageStats(message.MessageStats()).Render(context.Background(), m)
+		return c.HTML(http.StatusOK, m.String())
+	})
+
+	e.POST("/check-message", func(c echo.Context) error {
+		m := new(bytes.Buffer)
+		templates.GetCheck(message.CheckIMS(c.FormValue("ticket-number"))).Render(context.Background(), m)
 		return c.HTML(http.StatusOK, m.String())
 	})
 
