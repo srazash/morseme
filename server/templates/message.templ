@@ -1,7 +1,9 @@
 package templates
 
+import "morseme/server/message"
+
 templ NewMessage() {
-    <form id="message-form" hx-target="#message-form" hx-swap="innerHTML" hx-post="/message">
+    <form id="message-form" hx-target="#message-form" hx-swap="innerHTML" hx-post="/submit-message">
 		<fieldset>
 			<legend>Message to send</legend>
 			<div>
@@ -27,4 +29,8 @@ templ NewMessage() {
 			</div>
 		</fieldset>
 	</form>
+}
+
+templ SubmitMessage(m message.Message) {
+
 }

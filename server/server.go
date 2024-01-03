@@ -80,5 +80,10 @@ func main() {
 		return c.HTML(http.StatusOK, m.String())
 	})
 
+	e.POST("/send-message", func(c echo.Context) error {
+		m := new(bytes.Buffer)
+		return c.HTML(http.StatusOK, m.String())
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }
