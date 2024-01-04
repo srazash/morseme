@@ -18,7 +18,7 @@ func main() {
 	e.Use(middleware.Gzip())
 	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
 
-	e.Static("/", "static")
+	e.Static("/", "public")
 
 	e.GET("/ticket", func(c echo.Context) error {
 		m := new(bytes.Buffer)
