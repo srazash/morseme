@@ -20,7 +20,7 @@ type Message struct {
 
 var MessageStore = []Message{}
 
-func MessageHandler(m string, s string) string {
+func MessageHandler(m string, s string) Message {
 	NewMessage := Message{
 		MessageId:      len(MessageStore) + 1,
 		MessageText:    m,
@@ -35,7 +35,7 @@ func MessageHandler(m string, s string) string {
 
 	log.Infof("added: %v, %d items in store", NewMessage, len(MessageStore))
 
-	return fmt.Sprintf("%v\n", NewMessage)
+	return NewMessage
 }
 
 func AddToIMS(m Message) {

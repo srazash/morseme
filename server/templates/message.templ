@@ -1,6 +1,7 @@
 package templates
 
 import "morseme/server/message"
+import "morseme/server/morsecode"
 
 templ NewMessage() {
     <form id="message-form" hx-target="#message-form" hx-swap="innerHTML" hx-post="/submit-message">
@@ -32,5 +33,20 @@ templ NewMessage() {
 }
 
 templ SubmitMessage(m message.Message) {
-
+	<div id="message-form">
+		<fieldset>
+			<legend>Message sent</legend>
+			if m.MessageSender != "" {
+				<div>Thanks { m.MessageSender }, your message has been sent!</div>
+			} else {
+				<div>Thanks, your message has been sent!</div>
+			}
+			<pre>{ m.MessageText } --> { morsecode.ErrorlessEncode(m.MessageText) }</pre>
+			<br />
+			<div>Take note of your ticket # to check on the status of your message:</div>
+			<div id="encode-output" class="terminal-alert terminal-alert-primary">🎫 { m.MessageTicket }</div>
+			<br />
+			<button class="btn btn-primary" hx-target="#message-form" hx-swap="outerHTML" hx-get="/new-message">Send another message</button>
+		</fieldset>
+	</div>
 }

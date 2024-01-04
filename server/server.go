@@ -63,11 +63,6 @@ func main() {
 		return c.HTML(http.StatusOK, m.String())
 	})
 
-	e.POST("/message", func(c echo.Context) error {
-		m := message.MessageHandler(c.FormValue("message-body"), c.FormValue("message-sender"))
-		return c.HTML(http.StatusOK, m)
-	})
-
 	e.GET("/stats", func(c echo.Context) error {
 		m := new(bytes.Buffer)
 		templates.MessageStats(message.MessageStats()).Render(context.Background(), m)
@@ -80,8 +75,10 @@ func main() {
 		return c.HTML(http.StatusOK, m.String())
 	})
 
-	e.POST("/send-message", func(c echo.Context) error {
+	e.POST("/submit-message", func(c echo.Context) error {
 		m := new(bytes.Buffer)
+		msg := message.MessageHandler(c.FormValue("message-body"), c.FormValue("message-sender"))
+		templates.SubmitMessage(msg).Render(context.Background(), m)
 		return c.HTML(http.StatusOK, m.String())
 	})
 
