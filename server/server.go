@@ -77,8 +77,13 @@ func main() {
 
 	e.POST("/submit-message", func(c echo.Context) error {
 		m := new(bytes.Buffer)
-		msg := message.MessageHandler(c.FormValue("message-body"), c.FormValue("message-sender"))
-		templates.SubmitMessage(msg).Render(context.Background(), m)
+
+		msg, err := message.MessageHandler(c.FormValue("message-body"), c.FormValue("message-sender"))
+		if err != nil {
+			templates.ErrorMessage().Render(context.Background(), m)
+		} else {
+			templates.SubmitMessage(msg).Render(context.Background(), m)
+		}
 		return c.HTML(http.StatusOK, m.String())
 	})
 

@@ -1,8 +1,10 @@
 package message
 
 import (
+	"errors"
 	"fmt"
 	"morseme/server/ticket"
+	"regexp"
 	"time"
 
 	"github.com/labstack/gommon/log"
@@ -20,22 +22,28 @@ type Message struct {
 
 var MessageStore = []Message{}
 
-func MessageHandler(m string, s string) Message {
-	NewMessage := Message{
-		MessageId:      len(MessageStore) + 1,
-		MessageText:    m,
-		MessageSender:  s,
-		MessageTicket:  ticket.GenerateTicketNo(),
-		Submitted:      time.Now(),
-		Delivered:      time.Time{},
-		DeliveredState: false,
+func MessageHandler(m string, s string) (Message, error) {
+	re := regexp.MustCompile(`^[a-zA-Z\s]*$`)
+
+	if re.MatchString(m) {
+		NewMessage := Message{
+			MessageId:      len(MessageStore) + 1,
+			MessageText:    m,
+			MessageSender:  s,
+			MessageTicket:  ticket.GenerateTicketNo(),
+			Submitted:      time.Now(),
+			Delivered:      time.Time{},
+			DeliveredState: false,
+		}
+
+		MessageStore = append(MessageStore, NewMessage)
+
+		log.Infof("added: %v, %d items in store", NewMessage, len(MessageStore))
+
+		return NewMessage, nil
+	} else {
+		return Message{}, errors.New("input contains invalid characters")
 	}
-
-	MessageStore = append(MessageStore, NewMessage)
-
-	log.Infof("added: %v, %d items in store", NewMessage, len(MessageStore))
-
-	return NewMessage
 }
 
 func AddToIMS(m Message) {

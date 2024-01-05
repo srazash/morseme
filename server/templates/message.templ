@@ -54,3 +54,14 @@ templ SubmitMessage(m message.Message) {
 		</fieldset>
 	</div>
 }
+
+templ ErrorMessage() {
+	<div id="message-form">
+		<fieldset>
+			<legend>Message not sent</legend>
+			<div id="encode-output" class="terminal-alert terminal-alert-error">invalid input: letters and spaces only</div>
+			<br />
+			<button class="btn btn-primary" hx-target="#message-form" hx-swap="outerHTML" hx-get="/new-message">Send another message</button>
+		</fieldset>
+	</div>
+}
