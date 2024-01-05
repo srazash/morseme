@@ -77,7 +77,7 @@ func SubmitMessage(m message.Message) templ.Component {
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"message-form\"><fieldset><legend>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"message-form\"><legend>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -165,8 +165,12 @@ func SubmitMessage(m message.Message) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var15 := `🎫 `
+		templ_7745c5c3_Var15 := `🎫`
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var15)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <span id=\"ticket-num\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -175,16 +179,25 @@ func SubmitMessage(m message.Message) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><br><button class=\"btn btn-primary\" hx-target=\"#message-form\" hx-swap=\"outerHTML\" hx-get=\"/new-message\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <a _=\"on click log #ticket-num\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var17 := `Send another message`
+		templ_7745c5c3_Var17 := `Copy to clipboard`
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></fieldset></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</a></div><br><button class=\"btn btn-primary\" hx-target=\"#message-form\" hx-swap=\"outerHTML\" hx-get=\"/new-message\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var18 := `Send another message`
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
