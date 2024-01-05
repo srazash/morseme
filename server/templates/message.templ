@@ -46,7 +46,7 @@ templ SubmitMessage(m message.Message) {
 		<div id="encode-output" class="terminal-alert terminal-alert-primary">
 			🎫
 			<span id="ticket-num">{ m.MessageTicket }</span>
-			<a _="on click log #ticket-num">Copy to clipboard</a>
+			<a _="on click log #ticket-num.innerHTML">Copy to clipboard</a>
 		</div>
 		<br />
 		<button class="btn btn-primary" hx-target="#message-form" hx-swap="outerHTML" hx-get="/new-message">Send another message</button>
