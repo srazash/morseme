@@ -33,7 +33,7 @@ templ NewMessage() {
 }
 
 templ SubmitMessage(m message.Message) {
-	<div id="message-form">
+	<div id="message-form" _="on load fetch /stats put it into #message-stats.outerHTML">
 		<fieldset>
 			<legend>Message sent</legend>
 			if m.MessageSender != "" {

@@ -97,16 +97,16 @@ func MessageStats(total int, undelivered int, delivered int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button> <span _=\"on load\n            set :sec to 59\n            repeat while :sec &gt; 0\n                put &#39;(refreshes in &#39; + :sec + &#39;s)&#39; into me\n                decrement :sec by 1\n                wait 1s\n            end\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var10 := `(refreshes automatically every 60 seconds)`
+		templ_7745c5c3_Var10 := `(refreshes in 60s)`
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
