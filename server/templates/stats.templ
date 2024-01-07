@@ -23,11 +23,11 @@ templ MessageStats(total int, undelivered int, delivered int) {
         </table>
         <button class="btn" hx-trigger="click" hx-target="#message-stats" hx-swap="outerHTML" hx-get="/stats">Refresh statistics</button>
         <span _="on load
-            set :sec to 60
-            repeat 6 times
+            set :sec to 59
+            repeat 59 times
                 put '(refreshes in ' + :sec + 's)' into me
-                decrement :sec by 10
-                wait 10s
+                decrement :sec by 1
+                wait 1s
             end">
                 (refreshes in 60s)
             </span>

@@ -97,7 +97,7 @@ func MessageStats(total int, undelivered int, delivered int) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button> <span _=\"on load\n            set :sec to 60\n            repeat 6 times\n                put &#39;(refreshes in &#39; + :sec + &#39;s)&#39; into me\n                decrement :sec by 10\n                wait 10s\n            end\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button> <span _=\"on load\n            set :sec to 59\n            repeat 59 times\n                put &#39;(refreshes in &#39; + :sec + &#39;s)&#39; into me\n                decrement :sec by 1\n                wait 1s\n            end\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
