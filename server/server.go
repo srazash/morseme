@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"morseme/server/message"
 	"morseme/server/morsecode"
 	"morseme/server/templates"
@@ -85,6 +86,27 @@ func main() {
 			templates.SubmitMessage(msg).Render(context.Background(), m)
 		}
 		return c.HTML(http.StatusOK, m.String())
+	})
+
+	// APIs
+	e.GET("/api/messages/count", func(c echo.Context) error {
+		m, n, o := message.MessageStats()
+		return c.String(http.StatusOK, fmt.Sprintf("t:%d\tu:%d\td:%d\n", m, n, o))
+	})
+
+	e.GET("/api/messages/total", func(c echo.Context) error {
+		m, _, _ := message.MessageStats()
+		return c.String(http.StatusOK, fmt.Sprintf("%d\n", m))
+	})
+
+	e.GET("/api/messages/undelivered", func(c echo.Context) error {
+		_, m, _ := message.MessageStats()
+		return c.String(http.StatusOK, fmt.Sprintf("%d\n", m))
+	})
+
+	e.GET("/api/messages/delivered", func(c echo.Context) error {
+		_, _, m := message.MessageStats()
+		return c.String(http.StatusOK, fmt.Sprintf("%d\n", m))
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
