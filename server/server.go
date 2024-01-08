@@ -22,92 +22,92 @@ func main() {
 	e.Static("/", "public")
 
 	e.GET("/ticket", func(c echo.Context) error {
-		m := new(bytes.Buffer)
-		templates.TicketNo().Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		html := new(bytes.Buffer)
+		templates.TicketNo().Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.GET("/footer", func(c echo.Context) error {
-		m := new(bytes.Buffer)
-		templates.Footer().Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		html := new(bytes.Buffer)
+		templates.Footer().Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.GET("/title-morse", func(c echo.Context) error {
-		m := new(bytes.Buffer)
-		templates.TitleMorse().Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		html := new(bytes.Buffer)
+		templates.TitleMorse().Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.GET("/title-text", func(c echo.Context) error {
-		m := new(bytes.Buffer)
-		templates.TitleText().Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		html := new(bytes.Buffer)
+		templates.TitleText().Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.POST("/encode-to-morse", func(c echo.Context) error {
-		m := new(bytes.Buffer)
+		html := new(bytes.Buffer)
 		enc, err := morsecode.Encode(c.FormValue("text-input"))
-		templates.Encode(enc, err).Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		templates.Encode(enc, err).Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.GET("/new-message", func(c echo.Context) error {
-		m := new(bytes.Buffer)
-		templates.NewMessage().Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		html := new(bytes.Buffer)
+		templates.NewMessage().Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.GET("/check", func(c echo.Context) error {
-		m := new(bytes.Buffer)
-		templates.NewCheck().Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		html := new(bytes.Buffer)
+		templates.NewCheck().Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.GET("/stats", func(c echo.Context) error {
-		m := new(bytes.Buffer)
-		templates.MessageStats(message.MessageStats()).Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		html := new(bytes.Buffer)
+		templates.MessageStats(message.MessageStats()).Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.POST("/check-message", func(c echo.Context) error {
-		m := new(bytes.Buffer)
-		templates.GetCheck(message.CheckIMS(c.FormValue("ticket-number"))).Render(context.Background(), m)
-		return c.HTML(http.StatusOK, m.String())
+		html := new(bytes.Buffer)
+		templates.GetCheck(message.CheckIMS(c.FormValue("ticket-number"))).Render(context.Background(), html)
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.POST("/submit-message", func(c echo.Context) error {
-		m := new(bytes.Buffer)
+		html := new(bytes.Buffer)
 
 		msg, err := message.MessageHandler(c.FormValue("message-body"), c.FormValue("message-sender"))
 		if err != nil {
-			templates.ErrorMessage().Render(context.Background(), m)
+			templates.ErrorMessage().Render(context.Background(), html)
 		} else {
 			c.Response().Header().Add("HX-Trigger", "SubmitMessage")
-			templates.SubmitMessage(msg).Render(context.Background(), m)
+			templates.SubmitMessage(msg).Render(context.Background(), html)
 		}
-		return c.HTML(http.StatusOK, m.String())
+		return c.HTML(http.StatusOK, html.String())
 	})
 
 	// APIs
 	e.GET("/api/messages/count", func(c echo.Context) error {
-		m, n, o := message.MessageStats()
-		return c.String(http.StatusOK, fmt.Sprintf("t:%d\tu:%d\td:%d\n", m, n, o))
+		total, undelivered, delivered := message.MessageStats()
+		return c.String(http.StatusOK, fmt.Sprintf("t:%d\tu:%d\td:%d\n", total, undelivered, delivered))
 	})
 
 	e.GET("/api/messages/total", func(c echo.Context) error {
-		m, _, _ := message.MessageStats()
-		return c.String(http.StatusOK, fmt.Sprintf("%d\n", m))
+		total, _, _ := message.MessageStats()
+		return c.String(http.StatusOK, fmt.Sprintf("%d\n", total))
 	})
 
 	e.GET("/api/messages/undelivered", func(c echo.Context) error {
-		_, m, _ := message.MessageStats()
-		return c.String(http.StatusOK, fmt.Sprintf("%d\n", m))
+		_, undelivered, _ := message.MessageStats()
+		return c.String(http.StatusOK, fmt.Sprintf("%d\n", undelivered))
 	})
 
 	e.GET("/api/messages/delivered", func(c echo.Context) error {
-		_, _, m := message.MessageStats()
-		return c.String(http.StatusOK, fmt.Sprintf("%d\n", m))
+		_, _, delivered := message.MessageStats()
+		return c.String(http.StatusOK, fmt.Sprintf("%d\n", delivered))
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
