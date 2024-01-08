@@ -3,7 +3,7 @@ package templates
 import "fmt"
 
 templ MessageStats(total int, undelivered int, delivered int) {
-    <div id="message-stats" hx-trigger="every 60s" hx-target="#message-stats" hx-swap="outerHTML" hx-get="/stats">
+    <div id="message-stats" hx-trigger="every 60s, SubmitMessage from:body" hx-target="#message-stats" hx-swap="outerHTML" hx-get="/stats">
         <table>
             <caption>Message stats:</caption>
             <thead>

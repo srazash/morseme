@@ -83,6 +83,7 @@ func main() {
 		if err != nil {
 			templates.ErrorMessage().Render(context.Background(), m)
 		} else {
+			c.Response().Header().Add("HX-Trigger", "SubmitMessage")
 			templates.SubmitMessage(msg).Render(context.Background(), m)
 		}
 		return c.HTML(http.StatusOK, m.String())

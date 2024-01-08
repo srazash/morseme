@@ -25,7 +25,7 @@ func MessageStats(total int, undelivered int, delivered int) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"message-stats\" hx-trigger=\"every 60s\" hx-target=\"#message-stats\" hx-swap=\"outerHTML\" hx-get=\"/stats\"><table><caption>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"message-stats\" hx-trigger=\"every 60s, SubmitMessage from:body\" hx-target=\"#message-stats\" hx-swap=\"outerHTML\" hx-get=\"/stats\"><table><caption>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
