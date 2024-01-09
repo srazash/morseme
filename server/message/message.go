@@ -63,21 +63,3 @@ func CheckIMS(t string) Message {
 func StringifyMessage(m Message) string {
 	return fmt.Sprintf("Message: %s, from: %s (%s)", m.MessageText, m.MessageSender, m.MessageTicket)
 }
-
-func MessageStats() (int, int, int) {
-	total := 0
-	undelivered := 0
-	delivered := 0
-
-	total = len(MessageStore)
-
-	for _, v := range MessageStore {
-		if !v.DeliveredState {
-			undelivered += 1
-		}
-	}
-
-	delivered = total - undelivered
-
-	return total, undelivered, delivered
-}

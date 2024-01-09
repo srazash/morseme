@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
-	"fmt"
+	"morseme/server/api"
 	"morseme/server/message"
 	"morseme/server/morsecode"
 	"morseme/server/templates"
@@ -90,24 +90,28 @@ func main() {
 	})
 
 	// APIs
-	e.GET("/api/messages/count", func(c echo.Context) error {
-		total, undelivered, delivered := message.MessageStats()
-		return c.String(http.StatusOK, fmt.Sprintf("t:%d\tu:%d\td:%d\n", total, undelivered, delivered))
+	e.GET("/api/messages/stats", func(c echo.Context) error {
+		t, u, d := message.MessageStats()
+		j := api.MessageStatsJson(t, u, d)
+		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.GET("/api/messages/total", func(c echo.Context) error {
-		total, _, _ := message.MessageStats()
-		return c.String(http.StatusOK, fmt.Sprintf("%d\n", total))
+		t := message.MessageStatsTotal()
+		j := api.MessageStatsTotalJson(t)
+		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.GET("/api/messages/undelivered", func(c echo.Context) error {
-		_, undelivered, _ := message.MessageStats()
-		return c.String(http.StatusOK, fmt.Sprintf("%d\n", undelivered))
+		u := message.MessageStatsUndelivered()
+		j := api.MessageStatsUndeliveredJson(u)
+		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.GET("/api/messages/delivered", func(c echo.Context) error {
-		_, _, delivered := message.MessageStats()
-		return c.String(http.StatusOK, fmt.Sprintf("%d\n", delivered))
+		d := message.MessageStatsDelivered()
+		j := api.MessageStatsDeliveredJson(d)
+		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.Logger.Fatal(e.Start(":3000"))
