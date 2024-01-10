@@ -90,6 +90,11 @@ func main() {
 	})
 
 	// APIs
+	e.GET("/api/messages", func(c echo.Context) error {
+		j := api.MessagesJson(message.MessageStore)
+		return c.JSONBlob(http.StatusOK, j)
+	})
+
 	e.GET("/api/messages/stats", func(c echo.Context) error {
 		t, u, d := message.MessageStats()
 		j := api.MessageStatsJson(t, u, d)
