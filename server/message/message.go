@@ -11,13 +11,13 @@ import (
 )
 
 type Message struct {
-	MessageId      int
-	MessageText    string
-	MessageSender  string
-	MessageTicket  string
-	Submitted      time.Time
-	Delivered      time.Time
-	DeliveredState bool
+	MessageId      int       `json:"message_id"`
+	MessageText    string    `json:"message_text"`
+	MessageSender  string    `json:"message_sender"`
+	MessageTicket  string    `json:"message_ticket"`
+	Submitted      time.Time `json:"submitted"`
+	Delivered      time.Time `json:"delivered"`
+	DeliveredState bool      `json:"delivered_state"`
 }
 
 var MessageStore = []Message{}
