@@ -95,29 +95,48 @@ func main() {
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
-	e.GET("/api/messages/stats", func(c echo.Context) error {
+	e.GET("/api/messages/latest", func(c echo.Context) error {
+		j := api.LastMessageJson(message.MessageStore)
+		return c.JSONBlob(http.StatusOK, j)
+	})
+
+	e.GET("/api/messages/nexttodeliver", func(c echo.Context) error {
+		j := api.FirstUndeliveredMessageJson(message.MessageStore)
+		return c.JSONBlob(http.StatusOK, j)
+	})
+
+	e.GET("/api/stats", func(c echo.Context) error {
 		t, u, d := message.MessageStats()
 		j := api.MessageStatsJson(t, u, d)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
-	e.GET("/api/messages/total", func(c echo.Context) error {
+	e.GET("/api/stats/total", func(c echo.Context) error {
 		t := message.MessageStatsTotal()
 		j := api.MessageStatsTotalJson(t)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
-	e.GET("/api/messages/undelivered", func(c echo.Context) error {
+	e.GET("/api/stats/undelivered", func(c echo.Context) error {
 		u := message.MessageStatsUndelivered()
 		j := api.MessageStatsUndeliveredJson(u)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
-	e.GET("/api/messages/delivered", func(c echo.Context) error {
+	e.GET("/api/stats/delivered", func(c echo.Context) error {
 		d := message.MessageStatsDelivered()
 		j := api.MessageStatsDeliveredJson(d)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
+	PopulateIms() // insert dummy messages
+
 	e.Logger.Fatal(e.Start(":3000"))
+}
+
+func PopulateIms() {
+	message.MessageHandler("hello", "rsh")
+	message.MessageStore[0].DeliveredState = true
+	message.MessageHandler("hi", "ryan")
+	message.MessageHandler("hej", "rybear")
 }
