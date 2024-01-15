@@ -1,5 +1,7 @@
 # MorseMe
 
+![MorseMe](mm.png "MorseMe")
+
 Hey, welcome to the dumbest project in existence! This is a study project I have come up with which will involve the following libraries, tools and technologies:
 
 - [Go](https://go.dev)
