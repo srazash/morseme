@@ -129,6 +129,9 @@ func main() {
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
+	// Restricted API
+	//r := e.Group("/restricted")
+
 	PopulateIms() // insert dummy messages
 
 	e.Logger.Fatal(e.Start(":3000"))

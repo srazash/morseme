@@ -1,4 +1,6 @@
-[api_users]
-username1 = "password"
-username2 = "password"
-username3 = "password"
+[users]
+api_users = [
+    { username = "user1", password = "password" },
+    { username = "user2", password = "password" },
+    { username = "user3", password = "password" }
+]
