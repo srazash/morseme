@@ -12,7 +12,7 @@ import (
 	"github.com/pelletier/go-toml/v2"
 )
 
-type jwtCustomClaims struct {
+type JwtCustomClaims struct {
 	Name  string `json:"name"`
 	Admin bool   `json:"admin"`
 	jwt.RegisteredClaims
@@ -24,6 +24,8 @@ type users struct {
 		password string
 	}
 }
+
+var SIGNING_KEY_SECRET = GenerateSecret()
 
 func loadUsers() map[string]string {
 	file, err := os.Open("users.toml")
@@ -60,25 +62,21 @@ func Login(c echo.Context) error {
 	users := loadUsers()
 	pwd := users[username]
 
-	// Throws unauthorized error
 	if pwd == "" || password != pwd {
 		return echo.ErrUnauthorized
 	}
 
-	// Set custom claims
-	claims := &jwtCustomClaims{
+	claims := &JwtCustomClaims{
 		username,
 		true,
 		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Second * 60)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 5)),
 		},
 	}
 
-	// Create token with claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte("secret"))
+	t, err := token.SignedString([]byte(SIGNING_KEY_SECRET))
 	if err != nil {
 		return err
 	}

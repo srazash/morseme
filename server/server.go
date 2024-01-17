@@ -4,11 +4,14 @@ import (
 	"bytes"
 	"context"
 	"morseme/server/api"
+	"morseme/server/api/restricted"
 	"morseme/server/message"
 	"morseme/server/morsecode"
 	"morseme/server/templates"
 	"net/http"
 
+	"github.com/golang-jwt/jwt/v5"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -16,6 +19,8 @@ import (
 func main() {
 	e := echo.New()
 
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 	e.Use(middleware.Gzip())
 	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
 
@@ -130,7 +135,16 @@ func main() {
 	})
 
 	// Restricted API
-	//r := e.Group("/restricted")
+	e.POST("/login", restricted.Login())
+
+	r := e.Group("/restricted")
+	config := echojwt.Config{
+		NewClaimsFunc: func(c echo.Context) jwt.Claims {
+			return new(restricted.JwtCustomClaims)
+		},
+		SigningKey: []byte(restricted.SIGNING_KEY_SECRET),
+	}
+	r.Use(echojwt.WithConfig(config))
 
 	PopulateIms() // insert dummy messages
 
