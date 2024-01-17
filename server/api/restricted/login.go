@@ -44,7 +44,11 @@ func loadUsers() map[string]string {
 		log.Fatalf("unable to unmarshal users.toml: %v\n", err)
 	}
 
-	var user_list map[string]string
+	user_list := map[string]string{}
+
+	for _, v := range api_users.api_users {
+		user_list[v.username] = v.password
+	}
 
 	return user_list
 }
