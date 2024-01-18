@@ -9,6 +9,7 @@ import (
 	"morseme/server/morsecode"
 	"morseme/server/templates"
 	"net/http"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	echojwt "github.com/labstack/echo-jwt/v4"
@@ -95,21 +96,6 @@ func main() {
 	})
 
 	// APIs
-	e.GET("/api/messages", func(c echo.Context) error {
-		j := api.MessagesJson(message.MessageStore)
-		return c.JSONBlob(http.StatusOK, j)
-	})
-
-	e.GET("/api/messages/latest", func(c echo.Context) error {
-		j := api.LastMessageJson(message.MessageStore)
-		return c.JSONBlob(http.StatusOK, j)
-	})
-
-	e.GET("/api/messages/nexttodeliver", func(c echo.Context) error {
-		j := api.FirstUndeliveredMessageJson(message.MessageStore)
-		return c.JSONBlob(http.StatusOK, j)
-	})
-
 	e.GET("/api/stats", func(c echo.Context) error {
 		t, u, d := message.MessageStats()
 		j := api.MessageStatsJson(t, u, d)
@@ -135,7 +121,36 @@ func main() {
 	})
 
 	// Restricted API
-	e.POST("/login", restricted.Login())
+	e.POST("/login", func(c echo.Context) error {
+		username := c.FormValue("username")
+		password := c.FormValue("password")
+
+		users := restricted.LoadUsers()
+		pwd := users[username]
+
+		if pwd == "" || password != pwd {
+			return echo.ErrUnauthorized
+		}
+
+		claims := &restricted.JwtCustomClaims{
+			Name:  username,
+			Admin: true,
+			RegisteredClaims: jwt.RegisteredClaims{
+				ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 5)),
+			},
+		}
+
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+		t, err := token.SignedString([]byte(restricted.SIGNING_KEY_SECRET))
+		if err != nil {
+			return err
+		}
+
+		return c.JSON(http.StatusOK, echo.Map{
+			"token": t,
+		})
+	})
 
 	r := e.Group("/restricted")
 	config := echojwt.Config{
@@ -145,6 +160,21 @@ func main() {
 		SigningKey: []byte(restricted.SIGNING_KEY_SECRET),
 	}
 	r.Use(echojwt.WithConfig(config))
+
+	r.GET("/api/messages", func(c echo.Context) error {
+		j := api.MessagesJson(message.MessageStore)
+		return c.JSONBlob(http.StatusOK, j)
+	})
+
+	r.GET("/api/messages/latest", func(c echo.Context) error {
+		j := api.LastMessageJson(message.MessageStore)
+		return c.JSONBlob(http.StatusOK, j)
+	})
+
+	r.GET("/api/messages/nexttodeliver", func(c echo.Context) error {
+		j := api.FirstUndeliveredMessageJson(message.MessageStore)
+		return c.JSONBlob(http.StatusOK, j)
+	})
 
 	PopulateIms() // insert dummy messages
 

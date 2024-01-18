@@ -3,12 +3,9 @@ package restricted
 import (
 	"io"
 	"log"
-	"net/http"
 	"os"
-	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/labstack/echo/v4"
 	"github.com/pelletier/go-toml/v2"
 )
 
@@ -27,7 +24,7 @@ type users struct {
 
 var SIGNING_KEY_SECRET = GenerateSecret()
 
-func loadUsers() map[string]string {
+func LoadUsers() map[string]string {
 	file, err := os.Open("users.toml")
 	if err != nil {
 		log.Panicf("unable to open users.toml: %v\n", err)
@@ -52,36 +49,7 @@ func loadUsers() map[string]string {
 		user_list[v.username] = v.password
 	}
 
+	//user_list["admin"] = "password"
+
 	return user_list
-}
-
-func Login(c echo.Context) error {
-	username := c.FormValue("username")
-	password := c.FormValue("password")
-
-	users := loadUsers()
-	pwd := users[username]
-
-	if pwd == "" || password != pwd {
-		return echo.ErrUnauthorized
-	}
-
-	claims := &JwtCustomClaims{
-		username,
-		true,
-		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 5)),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	t, err := token.SignedString([]byte(SIGNING_KEY_SECRET))
-	if err != nil {
-		return err
-	}
-
-	return c.JSON(http.StatusOK, echo.Map{
-		"token": t,
-	})
 }
