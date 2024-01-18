@@ -121,7 +121,7 @@ func main() {
 	})
 
 	// Restricted API
-	e.POST("/login", func(c echo.Context) error {
+	e.POST("/api/login", func(c echo.Context) error {
 		username := c.FormValue("username")
 		password := c.FormValue("password")
 

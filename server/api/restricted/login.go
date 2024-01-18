@@ -15,11 +15,11 @@ type JwtCustomClaims struct {
 	jwt.RegisteredClaims
 }
 
-type users struct {
-	api_users []struct {
-		username string
-		password string
-	}
+type UsersToml struct {
+	APIUsers []struct {
+		Username string `toml:"username"`
+		Password string `toml:"password"`
+	} `toml:"api_users"`
 }
 
 var SIGNING_KEY_SECRET = GenerateSecret()
@@ -31,7 +31,7 @@ func LoadUsers() map[string]string {
 	}
 	defer file.Close()
 
-	var api_users users
+	var api_users UsersToml
 
 	in, err := io.ReadAll(file)
 	if err != nil {
@@ -45,11 +45,9 @@ func LoadUsers() map[string]string {
 
 	user_list := map[string]string{}
 
-	for _, v := range api_users.api_users {
-		user_list[v.username] = v.password
+	for _, v := range api_users.APIUsers {
+		user_list[v.Username] = v.Password
 	}
-
-	//user_list["admin"] = "password"
 
 	return user_list
 }
