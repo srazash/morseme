@@ -5,6 +5,7 @@ import (
 	"context"
 	"morseme/server/api"
 	"morseme/server/api/restricted"
+	"morseme/server/db"
 	"morseme/server/message"
 	"morseme/server/morsecode"
 	"morseme/server/templates"
@@ -18,6 +19,8 @@ import (
 )
 
 func main() {
+	db.CheckDb()
+
 	e := echo.New()
 
 	e.Use(middleware.Logger())

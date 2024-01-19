@@ -7,13 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type User struct {
+type Users struct {
 	Id       int
 	Username string
 	Password string
 }
 
-type Message struct {
+type Messages struct {
 	Id             int
 	Message        string
 	Sender         string
@@ -24,10 +24,11 @@ type Message struct {
 }
 
 func CheckDb() {
-	db, err := gorm.Open(sqlite.Open("msg.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 
-	db.AutoMigrate(&Message{})
+	db.AutoMigrate(&Users{})
+	db.AutoMigrate(&Messages{})
 }
