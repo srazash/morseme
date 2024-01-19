@@ -1,15 +1,20 @@
 package db
 
 import (
+	"time"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 type Message struct {
-	gorm.Model
-	Ticket  string
-	Message string
-	Status  bool
+	Id             int
+	Message        string
+	Sender         string
+	Ticket         string
+	Submitted      time.Time
+	Delivered      time.Time
+	DeliveredState bool
 }
 
 func Connect() {
