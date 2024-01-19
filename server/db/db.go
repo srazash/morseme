@@ -7,6 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
+type User struct {
+	Id       int
+	Username string
+	Password string
+}
+
 type Message struct {
 	Id             int
 	Message        string
@@ -17,10 +23,10 @@ type Message struct {
 	DeliveredState bool
 }
 
-func Connect() {
+func CheckDb() {
 	db, err := gorm.Open(sqlite.Open("msg.db"), &gorm.Config{})
 	if err != nil {
-		panic("failed to connect database")
+		panic(err)
 	}
 
 	db.AutoMigrate(&Message{})
