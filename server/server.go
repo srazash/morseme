@@ -19,7 +19,7 @@ import (
 )
 
 func main() {
-	db.CheckDb()
+	db.InitDb()
 
 	e := echo.New()
 
