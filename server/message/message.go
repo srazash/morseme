@@ -3,6 +3,7 @@ package message
 import (
 	"errors"
 	"fmt"
+	"morseme/server/db"
 	"morseme/server/ticket"
 	"regexp"
 	"time"
@@ -27,7 +28,7 @@ func MessageHandler(m string, s string) (Message, error) {
 
 	if re.MatchString(m) {
 		NewMessage := Message{
-			MessageId:      len(MessageStore) + 1,
+			MessageId:      0,
 			MessageText:    m,
 			MessageSender:  s,
 			MessageTicket:  ticket.GenerateTicketNo(),
@@ -37,6 +38,7 @@ func MessageHandler(m string, s string) (Message, error) {
 		}
 
 		MessageStore = append(MessageStore, NewMessage)
+		db.InsertMessage(NewMessage.MessageText, NewMessage.MessageSender, NewMessage.MessageTicket, NewMessage.Submitted)
 
 		log.Infof("added: %v, %d items in store", NewMessage, len(MessageStore))
 

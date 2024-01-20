@@ -1,7 +1,6 @@
 package db
 
 import (
-	"morseme/server/message"
 	"time"
 
 	"gorm.io/driver/sqlite"
@@ -36,16 +35,16 @@ func InitDb() {
 	db.AutoMigrate(&Messages{})
 }
 
-func WriteMessage(newmsg message.Message, ticket string) {
+func InsertMessage(message string, sender string, ticket string, submitted time.Time) {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 
 	db.Create(&Messages{
-		Message:   newmsg.MessageText,
-		Sender:    newmsg.MessageSender,
+		Message:   message,
+		Sender:    sender,
 		Ticket:    ticket,
-		Submitted: time.Now(),
+		Submitted: submitted,
 	})
 }

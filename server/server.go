@@ -179,14 +179,5 @@ func main() {
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
-	PopulateIms() // insert dummy messages
-
 	e.Logger.Fatal(e.Start(":3000"))
-}
-
-func PopulateIms() {
-	message.MessageHandler("hello", "rsh")
-	message.MessageStore[0].DeliveredState = true
-	message.MessageHandler("hi", "ryan")
-	message.MessageHandler("hej", "rybear")
 }
