@@ -48,3 +48,24 @@ func InsertMessage(message string, sender string, ticket string, submitted time.
 		Submitted: submitted,
 	})
 }
+
+func CountMessages() (int64, int64, int64) {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	var messages []Messages
+
+	result := db.Find(&messages)
+
+	total := result.RowsAffected
+
+	result = db.Where("delivered_state = ?", 0).Find(&messages)
+
+	undelivered := result.RowsAffected
+
+	delivered := total - undelivered
+
+	return total, undelivered, delivered
+}
