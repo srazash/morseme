@@ -7,13 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type Users struct {
+type User struct {
 	Id       int
 	Username string
 	Password string
 }
 
-type Messages struct {
+type Message struct {
 	Id             int
 	Message        string
 	Sender         string
@@ -31,8 +31,8 @@ func InitDb() {
 		panic(err)
 	}
 
-	db.AutoMigrate(&Users{})
-	db.AutoMigrate(&Messages{})
+	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Message{})
 }
 
 func InsertMessage(message string, sender string, ticket string, submitted time.Time) {
@@ -41,7 +41,7 @@ func InsertMessage(message string, sender string, ticket string, submitted time.
 		panic(err)
 	}
 
-	db.Create(&Messages{
+	db.Create(&Message{
 		Message:   message,
 		Sender:    sender,
 		Ticket:    ticket,
@@ -55,17 +55,28 @@ func CountMessages() (int64, int64, int64) {
 		panic(err)
 	}
 
-	var messages []Messages
+	var messages []Message
 
 	result := db.Find(&messages)
-
 	total := result.RowsAffected
 
 	result = db.Where("delivered_state = ?", 0).Find(&messages)
-
 	undelivered := result.RowsAffected
 
 	delivered := total - undelivered
 
 	return total, undelivered, delivered
+}
+
+func CheckMessage(ticket string) Message {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	var message Message
+
+	db.Where("ticket = ?", ticket).Last(&message)
+
+	return message
 }

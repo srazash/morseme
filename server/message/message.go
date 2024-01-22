@@ -37,7 +37,6 @@ func MessageHandler(m string, s string) (Message, error) {
 			DeliveredState: false,
 		}
 
-		MessageStore = append(MessageStore, NewMessage)
 		db.InsertMessage(NewMessage.MessageText, NewMessage.MessageSender, NewMessage.MessageTicket, NewMessage.Submitted)
 
 		log.Infof("added: %v, %d items in store", NewMessage, len(MessageStore))
