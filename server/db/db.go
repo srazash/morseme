@@ -68,7 +68,7 @@ func CountMessages() (int64, int64, int64) {
 	return total, undelivered, delivered
 }
 
-func CheckMessage(ticket string) Message {
+func CheckMessage(ticket string) (Message, error) {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -76,7 +76,11 @@ func CheckMessage(ticket string) Message {
 
 	var message Message
 
-	db.Where("ticket = ?", ticket).Last(&message)
+	result := db.Where("ticket = ?", ticket).Last(&message)
 
-	return message
+	if result.Error != nil {
+		return Message{}, result.Error
+	}
+
+	return message, nil
 }
