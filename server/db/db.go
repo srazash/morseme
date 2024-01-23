@@ -84,3 +84,37 @@ func CheckMessage(ticket string) (Message, error) {
 
 	return message, nil
 }
+
+func NextUndeliveredMessage() (Message, error) {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	var message Message
+
+	result := db.Where("delivered_state = ?", 0).First(&message)
+
+	if result.Error != nil {
+		return Message{}, result.Error
+	}
+
+	return message, nil
+}
+
+func LatestMessage() (Message, error) {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	var message Message
+
+	result := db.Last(&message)
+
+	if result.Error != nil {
+		return Message{}, result.Error
+	}
+
+	return message, nil
+}
