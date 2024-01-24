@@ -22,11 +22,3 @@ func MessageStatsDelivered() int {
 
 	return total - undelivered
 }
-
-func MessageStats() (int, int, int) {
-	total := MessageStatsTotal()
-	undelivered := MessageStatsUndelivered()
-	delivered := MessageStatsDelivered()
-
-	return total, undelivered, delivered
-}

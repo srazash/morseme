@@ -49,7 +49,7 @@ func InsertMessage(message string, sender string, ticket string, submitted time.
 	})
 }
 
-func CountMessages() (int64, int64, int64) {
+func CountMessages() (int, int, int) {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -65,7 +65,7 @@ func CountMessages() (int64, int64, int64) {
 
 	delivered := total - undelivered
 
-	return total, undelivered, delivered
+	return int(total), int(undelivered), int(delivered)
 }
 
 func CheckMessage(ticket string) (Message, error) {

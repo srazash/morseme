@@ -75,7 +75,7 @@ func main() {
 
 	e.GET("/stats", func(c echo.Context) error {
 		html := new(bytes.Buffer)
-		templates.MessageStats(message.MessageStats()).Render(context.Background(), html)
+		templates.MessageStats(db.CountMessages()).Render(context.Background(), html)
 		return c.HTML(http.StatusOK, html.String())
 	})
 
@@ -100,7 +100,7 @@ func main() {
 
 	// APIs
 	e.GET("/api/stats", func(c echo.Context) error {
-		t, u, d := message.MessageStats()
+		t, u, d := db.CountMessages()
 		j := api.MessageStatsJson(t, u, d)
 		return c.JSONBlob(http.StatusOK, j)
 	})
