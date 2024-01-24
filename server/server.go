@@ -75,7 +75,7 @@ func main() {
 
 	e.GET("/stats", func(c echo.Context) error {
 		html := new(bytes.Buffer)
-		templates.MessageStats(db.CountMessages()).Render(context.Background(), html)
+		templates.MessageStats(db.MessageCount()).Render(context.Background(), html)
 		return c.HTML(http.StatusOK, html.String())
 	})
 
@@ -95,13 +95,14 @@ func main() {
 		} else {
 			c.Response().Header().Add("HX-Trigger", "SubmitMessage")
 			templates.SubmitMessage(msg).Render(context.Background(), html)
+			db.UpdateMessageCount()
 		}
 		return c.HTML(http.StatusOK, html.String())
 	})
 
 	// APIs
 	e.GET("/api/stats", func(c echo.Context) error {
-		t, u, d := db.CountMessages()
+		t, u, d := db.MessageCount()
 		j := api.MessageStatsJson(t, u, d)
 		return c.JSONBlob(http.StatusOK, j)
 	})

@@ -25,6 +25,12 @@ type Message struct {
 
 const DATABASE_PATH = "app.db"
 
+var MESSAGE_STATS_CACHE struct {
+	total       int
+	undelivered int
+	delivered   int
+}
+
 func InitDb() {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
@@ -33,6 +39,8 @@ func InitDb() {
 
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Message{})
+
+	UpdateMessageCount()
 }
 
 func InsertMessage(message string, sender string, ticket string, submitted time.Time) {
@@ -49,7 +57,7 @@ func InsertMessage(message string, sender string, ticket string, submitted time.
 	})
 }
 
-func CountMessages() (int, int, int) {
+func UpdateMessageCount() {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -65,7 +73,13 @@ func CountMessages() (int, int, int) {
 
 	delivered := total - undelivered
 
-	return int(total), int(undelivered), int(delivered)
+	MESSAGE_STATS_CACHE.total = int(total)
+	MESSAGE_STATS_CACHE.undelivered = int(undelivered)
+	MESSAGE_STATS_CACHE.delivered = int(delivered)
+}
+
+func MessageCount() (int, int, int) {
+	return MESSAGE_STATS_CACHE.total, MESSAGE_STATS_CACHE.undelivered, MESSAGE_STATS_CACHE.delivered
 }
 
 func CheckMessage(ticket string) (Message, error) {
