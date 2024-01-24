@@ -1,6 +1,6 @@
 package templates
 
-import "morseme/server/message"
+import "morseme/server/db"
 import "morseme/server/morsecode"
 import "time"
 
@@ -22,14 +22,14 @@ templ NewCheck() {
 	</form>
 }
 
-templ GetCheck(m message.Message) {
+templ GetCheck(m db.Message, e error) {
 	<div id="check-form">
 		<fieldset>
 			<legend>Message check</legend>
-			if m.MessageId != 0 {
+			if e == nil && !m.DeliveredState {
 				<div id="encode-output" class="terminal-alert terminal-alert-primary">
-					<div>Message for ticket # { m.MessageTicket }:</div>
-					<pre>{ m.MessageText } --> { morsecode.ErrorlessEncode(m.MessageText) }</pre>
+					<div>Message for ticket # { m.Ticket }:</div>
+					<pre>{ m.Message } --> { morsecode.ErrorlessEncode(m.Message) }</pre>
 					if !m.DeliveredState {
 						<div>Your message has not been delievered!</div>
 						<div>Message sent: { m.Submitted.Format(time.RFC822) }</div>
@@ -40,7 +40,7 @@ templ GetCheck(m message.Message) {
 					}
 				</div>
 			} else {
-				<div id="encode-output" class="terminal-alert terminal-alert-error">No message found for ticket # { m.MessageTicket }. Please double check your ticket # and try again.</div>
+				<div id="encode-output" class="terminal-alert terminal-alert-error">No message found for ticket # { m.Ticket }. Please double check your ticket # and try again.</div>
 			}
 			<br />
 			<button class="btn btn-primary" hx-target="#check-form" hx-swap="outerHTML" hx-get="/check">Check another message</button>

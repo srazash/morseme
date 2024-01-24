@@ -2,7 +2,6 @@ package message
 
 import (
 	"errors"
-	"fmt"
 	"morseme/server/db"
 	"morseme/server/ticket"
 	"regexp"
@@ -45,22 +44,4 @@ func MessageHandler(m string, s string) (Message, error) {
 	} else {
 		return Message{}, errors.New("input contains invalid characters")
 	}
-}
-
-func AddToIMS(m Message) {
-	MessageStore = append(MessageStore, m)
-}
-
-func CheckIMS(t string) Message {
-	for _, m := range MessageStore {
-		if m.MessageTicket == t {
-			log.Infof("message found matching %s, returning message to caller", m.MessageTicket)
-			return m
-		}
-	}
-	return Message{0, "no message found", "", t, time.Time{}, time.Time{}, false}
-}
-
-func StringifyMessage(m Message) string {
-	return fmt.Sprintf("Message: %s, from: %s (%s)", m.MessageText, m.MessageSender, m.MessageTicket)
 }

@@ -81,7 +81,8 @@ func main() {
 
 	e.POST("/check-message", func(c echo.Context) error {
 		html := new(bytes.Buffer)
-		templates.GetCheck(message.CheckIMS(c.FormValue("ticket-number"))).Render(context.Background(), html)
+		msg, err := db.CheckMessage(c.FormValue("ticket-number"))
+		templates.GetCheck(msg, err).Render(context.Background(), html)
 		return c.HTML(http.StatusOK, html.String())
 	})
 
