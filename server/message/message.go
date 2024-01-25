@@ -6,8 +6,6 @@ import (
 	"morseme/server/ticket"
 	"regexp"
 	"time"
-
-	"github.com/labstack/gommon/log"
 )
 
 type Message struct {
@@ -19,8 +17,6 @@ type Message struct {
 	Delivered      time.Time `json:"delivered"`
 	DeliveredState bool      `json:"delivered_state"`
 }
-
-var MessageStore = []Message{}
 
 func MessageHandler(m string, s string) (Message, error) {
 	re := regexp.MustCompile(`^[a-zA-Z\s]*$`)
@@ -37,8 +33,6 @@ func MessageHandler(m string, s string) (Message, error) {
 		}
 
 		db.InsertMessage(NewMessage.MessageText, NewMessage.MessageSender, NewMessage.MessageTicket, NewMessage.Submitted)
-
-		log.Infof("added: %v, %d items in store", NewMessage, len(MessageStore))
 
 		return NewMessage, nil
 	} else {

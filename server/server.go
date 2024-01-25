@@ -173,12 +173,14 @@ func main() {
 	})
 
 	r.GET("/latest", func(c echo.Context) error {
-		j := api.LastMessageJson(message.MessageStore)
+		m, _ := db.LatestMessage()
+		j := api.MessageJson(m)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	r.GET("/next", func(c echo.Context) error {
-		j := api.FirstUndeliveredMessageJson(message.MessageStore)
+		m, _ := db.NextUndeliveredMessage()
+		j := api.MessageJson(m)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
