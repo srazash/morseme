@@ -14,13 +14,13 @@ type User struct {
 }
 
 type Message struct {
-	Id             int
-	Message        string
-	Sender         string
-	Ticket         string
-	Submitted      time.Time
-	Delivered      time.Time
-	DeliveredState bool
+	Id             int       `json:"id"`
+	Message        string    `json:"message"`
+	Sender         string    `json:"sender"`
+	Ticket         string    `json:"ticket"`
+	Submitted      time.Time `json:"submitted"`
+	Delivered      time.Time `json:"delivered"`
+	DeliveredState bool      `json:"delivered_state"`
 }
 
 const DATABASE_PATH = "app.db"
@@ -131,4 +131,17 @@ func LatestMessage() (Message, error) {
 	}
 
 	return message, nil
+}
+
+func GetAllMessages() []Message {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	var messages []Message
+
+	db.Find(&messages)
+
+	return messages
 }

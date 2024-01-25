@@ -108,19 +108,19 @@ func main() {
 	})
 
 	e.GET("/api/stats/total", func(c echo.Context) error {
-		t := message.MessageStatsTotal()
+		t, _, _ := db.MessageCount()
 		j := api.MessageStatsTotalJson(t)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.GET("/api/stats/undelivered", func(c echo.Context) error {
-		u := message.MessageStatsUndelivered()
+		_, u, _ := db.MessageCount()
 		j := api.MessageStatsUndeliveredJson(u)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.GET("/api/stats/delivered", func(c echo.Context) error {
-		d := message.MessageStatsDelivered()
+		_, _, d := db.MessageCount()
 		j := api.MessageStatsDeliveredJson(d)
 		return c.JSONBlob(http.StatusOK, j)
 	})
@@ -141,7 +141,7 @@ func main() {
 			Name:  username,
 			Admin: true,
 			RegisteredClaims: jwt.RegisteredClaims{
-				ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 5)),
+				ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 15)),
 			},
 		}
 
@@ -157,7 +157,7 @@ func main() {
 		})
 	})
 
-	r := e.Group("/restricted")
+	r := e.Group("/res")
 	config := echojwt.Config{
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(restricted.JwtCustomClaims)
@@ -166,17 +166,18 @@ func main() {
 	}
 	r.Use(echojwt.WithConfig(config))
 
-	r.GET("/api/messages", func(c echo.Context) error {
-		j := api.MessagesJson(message.MessageStore)
+	r.GET("/messages", func(c echo.Context) error {
+		m := db.GetAllMessages()
+		j := api.MessagesJson(m)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
-	r.GET("/api/messages/latest", func(c echo.Context) error {
+	r.GET("/latest", func(c echo.Context) error {
 		j := api.LastMessageJson(message.MessageStore)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
-	r.GET("/api/messages/nexttodeliver", func(c echo.Context) error {
+	r.GET("/next", func(c echo.Context) error {
 		j := api.FirstUndeliveredMessageJson(message.MessageStore)
 		return c.JSONBlob(http.StatusOK, j)
 	})
