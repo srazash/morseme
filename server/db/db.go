@@ -1,6 +1,7 @@
 package db
 
 import (
+	"morseme/server/api/restricted"
 	"time"
 
 	"gorm.io/driver/sqlite"
@@ -55,6 +56,32 @@ func InsertMessage(message string, sender string, ticket string, submitted time.
 		Ticket:    ticket,
 		Submitted: submitted,
 	})
+}
+
+func InsertUser(username string, password string) {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	hp := restricted.HastString(password)
+
+	db.Create(&User{
+		Username: username,
+		Password: hp,
+	})
+}
+
+func UpdateUser(username string, password string) {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm
+	if err != nil {
+		panic(err)
+	}
+
+	hp := restricted.HastString(password)
+
+	// finish me!
+
 }
 
 func UpdateMessageCount() {
