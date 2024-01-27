@@ -145,3 +145,27 @@ func GetAllMessages() []Message {
 
 	return messages
 }
+
+func GetAllUsers() []User {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	var users []User
+
+	db.Find(&users)
+
+	return users
+}
+
+func GetAllUsersMap() map[string]string {
+	users := GetAllUsers()
+	m := map[string]string{}
+
+	for _, v := range users {
+		m[v.Username] = v.Password
+	}
+
+	return m
+}

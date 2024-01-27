@@ -130,7 +130,7 @@ func main() {
 		username := c.FormValue("username")
 		password := c.FormValue("password")
 
-		users := restricted.LoadUsers()
+		users := db.GetAllUsersMap()
 		pwd := users[username]
 
 		if pwd == "" || password != pwd {
