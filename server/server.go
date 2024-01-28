@@ -75,13 +75,13 @@ func main() {
 
 	e.GET("/stats", func(c echo.Context) error {
 		html := new(bytes.Buffer)
-		templates.MessageStats(db.MessageCount()).Render(context.Background(), html)
+		templates.MessageStats(db.ReadMessageCountCache()).Render(context.Background(), html)
 		return c.HTML(http.StatusOK, html.String())
 	})
 
 	e.POST("/check-message", func(c echo.Context) error {
 		html := new(bytes.Buffer)
-		msg, err := db.CheckMessage(c.FormValue("ticket-number"))
+		msg, err := db.ReadMessage(c.FormValue("ticket-number"))
 		templates.GetCheck(msg, err).Render(context.Background(), html)
 		return c.HTML(http.StatusOK, html.String())
 	})
@@ -95,32 +95,32 @@ func main() {
 		} else {
 			c.Response().Header().Add("HX-Trigger", "SubmitMessage")
 			templates.SubmitMessage(msg).Render(context.Background(), html)
-			db.UpdateMessageCount()
+			db.UpdateMessageCountCache()
 		}
 		return c.HTML(http.StatusOK, html.String())
 	})
 
 	// APIs
 	e.GET("/api/stats", func(c echo.Context) error {
-		t, u, d := db.MessageCount()
+		t, u, d := db.ReadMessageCountCache()
 		j := api.MessageStatsJson(t, u, d)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.GET("/api/stats/total", func(c echo.Context) error {
-		t, _, _ := db.MessageCount()
+		t, _, _ := db.ReadMessageCountCache()
 		j := api.MessageStatsTotalJson(t)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.GET("/api/stats/undelivered", func(c echo.Context) error {
-		_, u, _ := db.MessageCount()
+		_, u, _ := db.ReadMessageCountCache()
 		j := api.MessageStatsUndeliveredJson(u)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	e.GET("/api/stats/delivered", func(c echo.Context) error {
-		_, _, d := db.MessageCount()
+		_, _, d := db.ReadMessageCountCache()
 		j := api.MessageStatsDeliveredJson(d)
 		return c.JSONBlob(http.StatusOK, j)
 	})
@@ -130,7 +130,7 @@ func main() {
 		username := c.FormValue("username")
 		password := c.FormValue("password")
 
-		users := db.GetAllUsersMap()
+		users := db.ReadAllUsersMap()
 		pwd := users[username]
 
 		if pwd == "" || password != pwd {
@@ -167,19 +167,19 @@ func main() {
 	r.Use(echojwt.WithConfig(config))
 
 	r.GET("/messages", func(c echo.Context) error {
-		m := db.GetAllMessages()
+		m := db.ReadAllMessages()
 		j := api.MessagesJson(m)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	r.GET("/latest", func(c echo.Context) error {
-		m, _ := db.LatestMessage()
+		m, _ := db.ReadLatestMessage()
 		j := api.MessageJson(m)
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
 	r.GET("/next", func(c echo.Context) error {
-		m, _ := db.NextUndeliveredMessage()
+		m, _ := db.ReadFirstUndeliveredMessage()
 		j := api.MessageJson(m)
 		return c.JSONBlob(http.StatusOK, j)
 	})

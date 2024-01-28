@@ -41,10 +41,10 @@ func InitDb() {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Message{})
 
-	UpdateMessageCount()
+	UpdateMessageCountCache()
 }
 
-func InsertMessage(message string, sender string, ticket string, submitted time.Time) {
+func CreateMessage(message string, sender string, ticket string, submitted time.Time) {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -58,7 +58,7 @@ func InsertMessage(message string, sender string, ticket string, submitted time.
 	})
 }
 
-func InsertUser(username string, password string) {
+func CreateUser(username string, password string) {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -89,7 +89,7 @@ func UpdateUser(username string, password string) {
 	db.Save(&user)
 }
 
-func UpdateMessageCount() {
+func UpdateMessageCountCache() {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -110,11 +110,11 @@ func UpdateMessageCount() {
 	MESSAGE_STATS_CACHE.delivered = int(delivered)
 }
 
-func MessageCount() (int, int, int) {
+func ReadMessageCountCache() (int, int, int) {
 	return MESSAGE_STATS_CACHE.total, MESSAGE_STATS_CACHE.undelivered, MESSAGE_STATS_CACHE.delivered
 }
 
-func CheckMessage(ticket string) (Message, error) {
+func ReadMessage(ticket string) (Message, error) {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -131,7 +131,7 @@ func CheckMessage(ticket string) (Message, error) {
 	return message, nil
 }
 
-func NextUndeliveredMessage() (Message, error) {
+func ReadFirstUndeliveredMessage() (Message, error) {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -148,7 +148,7 @@ func NextUndeliveredMessage() (Message, error) {
 	return message, nil
 }
 
-func LatestMessage() (Message, error) {
+func ReadLatestMessage() (Message, error) {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -165,7 +165,7 @@ func LatestMessage() (Message, error) {
 	return message, nil
 }
 
-func GetAllMessages() []Message {
+func ReadAllMessages() []Message {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -178,7 +178,7 @@ func GetAllMessages() []Message {
 	return messages
 }
 
-func GetAllUsers() []User {
+func ReadAllUsers() []User {
 	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -191,8 +191,8 @@ func GetAllUsers() []User {
 	return users
 }
 
-func GetAllUsersMap() map[string]string {
-	users := GetAllUsers()
+func ReadAllUsersMap() map[string]string {
+	users := ReadAllUsers()
 	m := map[string]string{}
 
 	for _, v := range users {

@@ -22,7 +22,7 @@ func MessageHandler(m string, s string) (db.Message, error) {
 			DeliveredState: false,
 		}
 
-		db.InsertMessage(NewMessage.Message, NewMessage.Sender, NewMessage.Ticket, NewMessage.Submitted)
+		db.CreateMessage(NewMessage.Message, NewMessage.Sender, NewMessage.Ticket, NewMessage.Submitted)
 
 		return NewMessage, nil
 	} else {
