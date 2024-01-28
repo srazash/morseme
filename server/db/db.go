@@ -73,15 +73,20 @@ func InsertUser(username string, password string) {
 }
 
 func UpdateUser(username string, password string) {
-	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
 
 	hp := restricted.HastString(password)
 
-	// finish me!
+	var user User
 
+	db.Where("username = ?", username).First(&user)
+
+	user.Password = hp
+
+	db.Save(&user)
 }
 
 func UpdateMessageCount() {
