@@ -185,5 +185,11 @@ func main() {
 		return c.JSONBlob(http.StatusOK, j)
 	})
 
+	r.GET("/deliver", func(c echo.Context) error {
+		m, _ := db.DeliverMessage()
+		j := api.MessageJson(m)
+		return c.JSONBlob(http.StatusOK, j)
+	})
+
 	e.Logger.Fatal(e.Start(":3000"))
 }
