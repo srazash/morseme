@@ -6,7 +6,7 @@ import (
 	"github.com/jzelinskie/whirlpool"
 )
 
-func HastString(in string) string {
+func HashString(in string) string {
 	w := whirlpool.New()
 	input := []byte(in)
 	w.Write(input)

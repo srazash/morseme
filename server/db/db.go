@@ -1,12 +1,23 @@
 package db
 
 import (
+	"io"
+	"log"
 	"morseme/server/api/restricted"
+	"os"
 	"time"
 
+	"github.com/pelletier/go-toml/v2"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
+
+type UsersToml struct {
+	APIUsers []struct {
+		Username string `toml:"username"`
+		Password string `toml:"password"`
+	} `toml:"api_users"`
+}
 
 type User struct {
 	Id       int
@@ -64,7 +75,7 @@ func CreateUser(username string, password string) {
 		panic(err)
 	}
 
-	hp := restricted.HastString(password)
+	hp := restricted.HashString(password)
 
 	db.Create(&User{
 		Username: username,
@@ -78,7 +89,7 @@ func UpdateUser(username string, password string) {
 		panic(err)
 	}
 
-	hp := restricted.HastString(password)
+	hp := restricted.HashString(password)
 
 	var user User
 
@@ -200,4 +211,36 @@ func ReadAllUsersMap() map[string]string {
 	}
 
 	return m
+}
+
+func LoadUsersToDb() {
+	file, err := os.Open("users.toml")
+	if err != nil {
+		log.Panicf("unable to open users.toml: %v\n", err)
+	}
+	defer file.Close()
+
+	var api_users UsersToml
+
+	in, err := io.ReadAll(file)
+	if err != nil {
+		log.Panicf("unable to read users.toml: %v\n", err)
+	}
+
+	err = toml.Unmarshal(in, &api_users)
+	if err != nil {
+		log.Fatalf("unable to unmarshal users.toml: %v\n", err)
+	}
+
+	user_list := ReadAllUsersMap()
+
+	for _, v := range api_users.APIUsers {
+		hp := restricted.HashString(v.Password)
+
+		if user_list[v.Username] == "" {
+			CreateUser(v.Username, v.Password)
+		} else if user_list[v.Username] != hp {
+			UpdateUser(v.Username, v.Password)
+		}
+	}
 }

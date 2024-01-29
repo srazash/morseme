@@ -20,6 +20,7 @@ import (
 
 func main() {
 	db.InitDb()
+	db.LoadUsersToDb()
 
 	e := echo.New()
 
