@@ -264,5 +264,7 @@ func DeliverMessage() (Message, error) {
 
 	db.Save(&message)
 
+	UpdateMessageCountCache()
+
 	return message, nil
 }
