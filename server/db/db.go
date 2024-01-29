@@ -244,3 +244,25 @@ func LoadUsersToDb() {
 		}
 	}
 }
+
+func DeliverMessage() (Message, error) {
+	db, err := gorm.Open(sqlite.Open(DATABASE_PATH), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	var message Message
+
+	result := db.Where("delivered_state = ?", 0).First(&message)
+
+	if result.Error != nil {
+		return Message{}, result.Error
+	}
+
+	message.Delivered = time.Now()
+	message.DeliveredState = true
+
+	db.Save(&message)
+
+	return message, nil
+}
